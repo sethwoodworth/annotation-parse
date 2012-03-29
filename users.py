@@ -22,12 +22,12 @@ for row in file:
 			
 			if str(item[1:2]).count("'")==1 and str(item[len(item)-1:len(item)]).count("'") != 1:
 				open = True
-				holdString += str(item)
+				holdString += str(item)+","
 			elif str(item[1:2]).count("'")!=1 and str(item[len(item)-1:len(item)]).count("'") == 1:
 				open = False
 				holdString += str(item)
 			elif open:
-				holdString += str(item)
+				holdString += str(item) +","
 			elif str(item[1:2]).count("'")==1 and str(item[len(item)-1:len(item)]).count("'") == 1:
 				open = False
 				holdString = item
