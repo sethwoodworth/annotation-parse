@@ -5,14 +5,15 @@ import re
 
 output.write("[")
 for row in file:
-	if "INSERT INTO `sections" in row:
+	if "INSERT INTO `section_parents" in row:
 		print row
-		#first = row.split("(", 1)[1].split(",", 2)
+		first = row.split("(", 1)[1].split(",", 1)
 		dic = {}
-		#dic["id"] = int(first[0])
-		#dic["section_id"] = int(first[1])
-		#dic["content"] = str(first[2]).rsplit(");")[0]
-		#output.write(json.dumps(dic)+str(","))
-		#print json.dumps(dic, sort_keys=True, indent=4)
-#output.write("]")
-#output.close()
+		dic["parent_id"] = int(first[0])
+		dic["child_id"] = int(str(first[1]).rsplit(");")[0])
+		#dic["order"] = int(first[2])
+		#dic["name"] = str(first[3]).rsplit(");")[0].split("\'")[1]
+		output.write(json.dumps(dic)+str(","))
+		print json.dumps(dic, sort_keys=True, indent=4)
+output.write("]")
+output.close()

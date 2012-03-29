@@ -11,6 +11,7 @@ for row in file:
 		print row
 		first = row.split("(", 1)[1].split(",", 5)
 		content = first[5].rsplit(",", 3)[0]
+		print "content before " + str(content)
 		c1 = re.split("', [-+]?\d+", content)[0]
 		c2 = re.search("', [-+]?\d+", content).group().split(",")[1]
 		#c2 = re.split("', [-+]?\d+", content)[1].split(",", 1)[0]
@@ -25,9 +26,9 @@ for row in file:
 				last[0] = int(item.replace("'", ""))
 			else:
 				last[index] = item.replace("'", "")
-		#print "first " + str(first)
-		#print "content " + str(content)
-		#print "last " + str(last)
+		print "first " + str(first)
+		print "content " + str(content)
+		print "last " + str(last)
 		dic = {}
 		dic["id"] = first[0]
 		dic["user_id"] = first[1]
