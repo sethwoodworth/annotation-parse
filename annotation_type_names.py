@@ -4,8 +4,11 @@ import json
 import re
 
 output.write("[")
+firstTime = True
 for row in file:
 	if "INSERT INTO `annotation_type_names`" in row:
+		if not firstTime:
+			output.write (str(','))
 		print row
 		first = row.split("(", 1)[1].split(",")
 		
@@ -14,7 +17,7 @@ for row in file:
 		dic["type"] = str(first[1])
 		dic["icon_path"] = str(first[2])
 		dic["icon_alt"] = str(str(first[3]).rsplit(");")[0])
-		output.write(json.dumps(dic)+str(","))
+		output.write(json.dumps(dic))
 		print json.dumps(dic, sort_keys=True, indent=4)
 output.write("]")
 output.close()

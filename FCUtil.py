@@ -3,12 +3,15 @@ import unicodedata
 import re, htmlentitydefs
 
 sd = {
-	"\\''":"'",
-	"\r":"",
-	"\n":"",
-	"\\":"",
-	"''":"'",
-	"rnrn":""
+    '\\r\\n':' ',
+    '\r\n':' ',
+	'\\r':'',
+	'\\n':'',
+	'\'\'':'\'',
+	'\'\'\'\'':'\"\'',
+	'\\':' ',
+	'\'\'':'\'',
+    '--':'&mdash;'
 }
 
 def cleanLTQ(item):
@@ -25,7 +28,7 @@ def removeSpecChar(s):
 	return s
 
 def unescapeHTML(s):
-	return strip_html(s).decode("unicode")
+	return strip_html(s)
 
 def unescape(text):
     def fixup(m):
@@ -76,9 +79,16 @@ def strip_html(text):
     return re.sub("(?s)<[^>]*>|&#?\w+;", fixup, text)	
 	
 def cleanStr(s):
-	return unescapeHTML(removeSpecChar(cleanLTQ(s)))
+	if s == ' \' \'':
+		return None
+	else:
+		return removeSpecChar(removeSpecChar(cleanLTQ(s)))
 	
 def remove_html_tags(data):
     p = re.compile(r'<.*?>')
-    return p.sub('', data)
+    return p.sub(' ', data)
+    
+def remove_html_tags_noWS(data):
+	p = re.compile(r'<.*?>')
+	return p.sub('', data)
 	

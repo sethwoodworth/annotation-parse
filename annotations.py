@@ -3,10 +3,15 @@ output = open('annotations.json', 'w')
 import json
 import re
 
+firstTime = True
+output.write("[")
 for row in file:
 	if row[:24] == "INSERT INTO `annotations":
 		#ASSUMPTIONS: Table name does not include ")"
 		#Quote does not include "', [0-9]"
+		if not firstTime:
+				output.write (str(','))
+		firstTime = False
 
 		print row
 		first = row.split("(", 1)[1].split(",", 5)
@@ -40,8 +45,9 @@ for row in file:
 		dic["rating"] = c2
 		dic["published"] = last[0]
 		dic["created_on"] = last[1]
-		dic["deleted_on"] = last[2]
-		output.write(str(json.dumps(dic)) + str(","))
+		dic["deleted_on"] = last[2].lstrip().rstrip()
+		output.write(str(json.dumps(dic)))
 		print json.dumps(dic, sort_keys=True, indent=4)
 
+output.write("]")
 output.close()
