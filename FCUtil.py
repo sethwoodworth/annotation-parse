@@ -1,6 +1,7 @@
 import HTMLParser
 import unicodedata
 import re, htmlentitydefs
+import json
 
 sd = {
     '\\r\\n':' ',
@@ -91,4 +92,54 @@ def remove_html_tags(data):
 def remove_html_tags_noWS(data):
 	p = re.compile(r'<.*?>')
 	return p.sub('', data)
+
+def getAllAnnoationsforSec(id):
+    annJson = openJsonFile('annotations.json')
+    annList = []
+    for obj in annJson:
+        if obj['section_id'] == id:
+            annList.append(obj['id'])
+    return annList
+
+def getAllAnnotationsforWork(id):
+    annJson = openJsonFile('annotations.json')
+    annList = []
+    secList = getAllSectionsforWork(id)
+    for obj in annJson:
+        if obj['section_id'] in secList:
+            annList.append(obj['id'])
+    return annList
+
+def getAllSectionsforWork(id):
+    secJson = openJsonFile('sections.json')
+    seclist = []
+    for obj in secJson:
+        if obj['work_id'] == id:
+            seclist.append(obj['id'])
+    return seclist
+
+def getAllWorksExcluding(authors):
+    workJson = openJsonFile('works.json')
+    worklist= []
+    for obj in workJson:
+        if obj['author'] not in authors:
+            worklist.append(obj['id'])
+    return worklist
+
+def openJsonFile(path):
+    f = open(path)
+    #print "test"
+    JSON = json.load(f)
+    f.close()
+    return JSON
+
+def wordcount_to_charcount(wordcount,text):
+    count = 0
+    for word in text.split()[0:wordcount-1]:
+        count += (len(word)+1)
+    if wordcount < 1:
+        print 'Word Count less than 1'
+    return count
+
+
 	
